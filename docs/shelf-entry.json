@@ -7,6 +7,6 @@
   "url": "http://localhost:5590",
   "healthPath": "/api/health",
   "composeFile": "deploy-test-LAB/docker-compose.yml",
-  "repo": "https://github.com/ping-sandbox/deploy-test-LAB",
+  "repo": "https://github.com/curtismu7/deploy-test-LAB",
   "tags": ["simulated"]
 }
