@@ -14,4 +14,4 @@ http.createServer((req, res) => {
   }
   if (url.pathname === '/') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return res.end(html); }
   res.writeHead(404, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'not-found' }));
-}).listen(port, '127.0.0.1', () => console.log(`deploy-test-LAB on http://127.0.0.1:${port}`));
+}).listen(port, '0.0.0.0', () => console.log(`deploy-test-LAB on http://127.0.0.1:${port}`));
