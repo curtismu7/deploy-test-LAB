@@ -9,7 +9,7 @@ main{text-align:center;padding:2rem}h1{font-size:1.4rem}code{background:#fff;pad
 <body><main><h1>Deploy Test LAB</h1><p>This app exists to exercise the shelf's one-click Deploy: clone, build, run.</p>
 <p>Health: <code>GET /api/health</code></p><p id="shelf"></p>
 <script>fetch('/api/shelf').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.shelfUrl){const a=document.createElement('a');a.href=d.shelfUrl;a.target='_blank';a.rel='noreferrer';a.textContent='Shelf';document.getElementById('shelf').replaceChildren(a);}}).catch(()=>{});</script></main></body></html>\n`;
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/api/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -22,3 +22,5 @@ http.createServer((req, res) => {
   if (url.pathname === '/') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return res.end(html); }
   res.writeHead(404, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'not-found' }));
 }).listen(port, '0.0.0.0', () => console.log(`deploy-test-LAB on http://127.0.0.1:${port}`));
+
+export default server;
