@@ -16,6 +16,7 @@ const server = http.createServer((req, res) => {
     return res.end(JSON.stringify({ schema: 'demo-health/1', at: new Date().toISOString(), state: 'ready', runtime: 'offline', demo: { id: 'deploy-test-lab', name: 'Deploy Test LAB', version: '0.1.0' } }));
   }
   if (url.pathname === '/api/shelf') {
+    if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405, { 'Content-Type': 'application/json', Allow: 'GET, HEAD' }); return res.end(JSON.stringify({ error: 'method-not-allowed' })); }
     res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
     return res.end(JSON.stringify(shelfInfo()));
   }

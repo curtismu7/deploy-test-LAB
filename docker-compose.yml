@@ -3,4 +3,6 @@ services:
     build: .
     ports:
       - "127.0.0.1:5590:5590"
+    environment:
+      SHELF_URL: ${SHELF_URL:-http://127.0.0.1:4400}
     restart: unless-stopped

@@ -10,14 +10,16 @@ await new Promise((resolve) => {
   server.once('listening', resolve);
 });
 
-function get(path) {
+function get(path, method = 'GET') {
   return new Promise((resolve, reject) => {
     const { port } = server.address();
-    http.get({ host: '127.0.0.1', port, path }, (res) => {
+    const req = http.request({ host: '127.0.0.1', port, path, method }, (res) => {
       let body = '';
       res.on('data', (c) => { body += c; });
       res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(body) }));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.end();
   });
 }
 
@@ -40,3 +42,14 @@ test('GET /api/shelf returns { shelfUrl }', async () => {
 });
 
 test.after(() => new Promise((resolve) => server.close(resolve)));
+
+test('GET /api/shelf trims a trailing slash from SHELF_URL, and a POST to it is not 200', async () => {
+  const prev = process.env.SHELF_URL;
+  process.env.SHELF_URL = 'https://shelf.example:8443/';
+  try {
+    const r = await get('/api/shelf');
+    assert.equal(r.status, 200);
+    assert.deepEqual(r.body, { shelfUrl: 'https://shelf.example:8443' });
+    assert.notEqual((await get('/api/shelf', 'POST')).status, 200);
+  } finally { process.env.SHELF_URL = prev; }
+});
