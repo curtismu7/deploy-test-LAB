@@ -4,5 +4,5 @@ services:
     ports:
       - "127.0.0.1:5590:5590"
     environment:
-      SHELF_URL: ${SHELF_URL:-http://127.0.0.1:4400}
+      SHELF_URL: ${SHELF_URL:-https://local.ping-devops.com:8443/demo-shelf}
     restart: unless-stopped
